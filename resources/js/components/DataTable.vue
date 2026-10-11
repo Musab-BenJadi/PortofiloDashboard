@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import type { RowSelectionState } from '@tanstack/vue-table'
+import type { ColumnDef, RowSelectionState } from '@tanstack/vue-table'
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from '@lucide/vue'
 import {
   columnFilteringFeature,
   columnVisibilityFeature,
-  createColumnHelper,
   createExpandedRowModel,
   createFilteredRowModel,
   createPaginatedRowModel,
@@ -21,11 +20,7 @@ import {
   useTable,
 } from '@tanstack/vue-table'
 import { createReusableTemplate } from '@vueuse/core'
-<<<<<<< HEAD
-import { h, ref } from 'vue'
-=======
-import { h, ref, defineProps, computed } from 'vue'
->>>>>>> eb0788ef6825bef663cd8ff2a7cb40fe967ad862
+import { ref, computed } from 'vue'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -47,47 +42,6 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-<<<<<<< HEAD
-export interface Payment {
-  id: string
-  amount: number
-  status: 'pending' | 'processing' | 'success' | 'failed'
-  email: string
-}
-
-const data: Payment[] = [
-  {
-    id: 'm5gr84i9',
-    amount: 316,
-    status: 'success',
-    email: 'ken99@yahoo.com',
-  },
-  {
-    id: '3u1reuv4',
-    amount: 242,
-    status: 'success',
-    email: 'Abe45@gmail.com',
-  },
-  {
-    id: 'derv1ws0',
-    amount: 837,
-    status: 'processing',
-    email: 'Monserrat44@gmail.com',
-  },
-  {
-    id: '5kma53ae',
-    amount: 874,
-    status: 'success',
-    email: 'Silas22@gmail.com',
-  },
-  {
-    id: 'bhqecj4p',
-    amount: 721,
-    status: 'failed',
-    email: 'carmella@hotmail.com',
-  },
-]
-=======
 export interface ContactForm {
     id: number;
     name: string;
@@ -106,7 +60,6 @@ const props = defineProps<{
 }>();
 
 const data = computed(() => props.data);
->>>>>>> eb0788ef6825bef663cd8ff2a7cb40fe967ad862
 
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate<{
   payment: {
@@ -130,120 +83,49 @@ const features = tableFeatures({
   sortedRowModel: createSortedRowModel(),
   filterFns: { includesString: filterFn_includesString },
   sortFns: { alphanumeric: sortFn_alphanumeric, text: sortFn_text },
-})
+}) as any
 
-<<<<<<< HEAD
-const columnHelper = createColumnHelper<typeof features, Payment>()
-
-const columns = columnHelper.columns([
-  columnHelper.display({
-    id: 'select',
-    header: ({ table }) => h(Checkbox, {
-      'modelValue': table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate'),
-      'onUpdate:modelValue': (value: boolean | 'indeterminate') => table.toggleAllPageRowsSelected(!!value),
-      'ariaLabel': 'Select all',
-    }),
-    cell: ({ row }) => h(Checkbox, {
-      'modelValue': row.getIsSelected(),
-      'onUpdate:modelValue': (value: boolean | 'indeterminate') => row.toggleSelected(!!value),
-      'ariaLabel': 'Select row',
-    }),
-    enableSorting: false,
-    enableHiding: false,
-  }),
-  columnHelper.accessor('status', {
-    header: 'Status',
-    cell: ({ row }) => h('div', { class: 'capitalize' }, row.getValue('status')),
-  }),
-  columnHelper.accessor('email', {
-    header: ({ column }) => {
-      return h(Button, {
-        variant: 'ghost',
-        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-      }, () => ['Email', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })])
-    },
-    cell: ({ row }) => h('div', { class: 'lowercase' }, row.getValue('email')),
-  }),
-  columnHelper.accessor('amount', {
-    header: () => h('div', { class: 'text-right' }, 'Amount'),
-    cell: ({ row }) => {
-      const amount = Number.parseFloat(row.getValue('amount'))
-
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-      }).format(amount)
-
-      return h('div', { class: 'text-right font-medium' }, formatted)
-    },
-  }),
-  columnHelper.display({
-    id: 'actions',
-    enableHiding: false,
-    cell: ({ row }) => {
-      const payment = row.original
-
-      return h(ReuseTemplate, {
-        payment,
-        onExpand: () => row.toggleExpanded(),
-      })
-    },
-  }),
-])
-=======
-const columnHelper = createColumnHelper<typeof features, ContactForm>()
-
-const columns = computed(() =>
-    columnHelper.columns(
-        props.columns.map((column) =>
-            columnHelper.accessor(
-                column.accessorKey as keyof ContactForm,
-                {
-                    header: column.header,
-                    cell: ({ getValue }) => getValue(),
-                },
-            ),
-        ),
-    ),
-);
->>>>>>> eb0788ef6825bef663cd8ff2a7cb40fe967ad862
+const columns = ref<any[]>(
+  props.columns.map((column) => ({
+    accessorKey: column.accessorKey as keyof ContactForm,
+    header: column.header,
+    cell: ({ getValue }: { getValue: (key: keyof ContactForm) => ContactForm[keyof ContactForm] }) => getValue(column.accessorKey as keyof ContactForm),
+  })),
+)
 
 // Keep row selection outside the table so the rest of the app can read or update it.
 const rowSelection = ref<RowSelectionState>({})
 
 const table = useTable({
-<<<<<<< HEAD
-  features,
-  data,
-  columns,
-  state: {
-    get rowSelection() { return rowSelection.value },
-  },
-  onRowSelectionChange: (updater) => {
-    rowSelection.value = typeof updater === 'function' ? updater(rowSelection.value) : updater
-  },
-})
-=======
     features,
     data: computed(() => props.data),
-    columns,
+    columns: columns as any,
     state: {
         get rowSelection() {
             return rowSelection.value;
         },
     },
-    onRowSelectionChange: (updater) => {
+    onRowSelectionChange: (updater: RowSelectionState | ((current: RowSelectionState) => RowSelectionState)) => {
         rowSelection.value =
             typeof updater === 'function'
                 ? updater(rowSelection.value)
                 : updater;
     },
-});
->>>>>>> eb0788ef6825bef663cd8ff2a7cb40fe967ad862
+} as any)
 
 function copy(id: string) {
   navigator.clipboard.writeText(id)
+}
+
+function canHideColumn(column: { getCanHide: () => boolean }) {
+  return column.getCanHide()
+}
+
+function toggleColumnVisibility(
+  column: { getIsVisible: () => boolean; toggleVisibility: (visible: boolean) => void },
+  value: unknown,
+) {
+  column.toggleVisibility(Boolean(value))
 }
 </script>
 
@@ -283,13 +165,11 @@ function copy(id: string) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuCheckboxItem
-            v-for="column in table.getAllColumns().filter((column) => column.getCanHide())"
+            v-for="column in table.getAllColumns().filter(canHideColumn)"
             :key="column.id"
             class="capitalize"
             :model-value="column.getIsVisible()"
-            @update:model-value="(value) => {
-              column.toggleVisibility(!!value)
-            }"
+            @update:model-value="(value) => toggleColumnVisibility(column, value)"
           >
             {{ column.id }}
           </DropdownMenuCheckboxItem>

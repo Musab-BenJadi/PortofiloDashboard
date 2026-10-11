@@ -31,6 +31,7 @@ export const skillGroups = [
       { name: 'GitHub', icon: 'Github' },
       { name: 'Vite', icon: 'Zap' },
       { name: 'VS Code', icon: 'Code2' },
+      { name: 'WorsPress CMS', icon: 'Monitor' },
     ],
   },
 ]
