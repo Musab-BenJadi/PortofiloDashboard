@@ -15,7 +15,11 @@ const { locale, isArabic, t } = useLocale()
 </script>
 
 <template>
+<<<<<<< HEAD
   <div class="min-h-screen bg-ink-950 text-paper-100" :lang="locale" :dir="isArabic ? 'rtl' : 'ltr'">
+=======
+  <div class="min-h-screen bg-ink-950 text-paper-100 transition-colors duration-300" :lang="locale" :dir="isArabic ? 'rtl' : 'ltr'">
+>>>>>>> eb0788ef6825bef663cd8ff2a7cb40fe967ad862
     <a
       href="#main-content"
       class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-signal-400 focus:px-4 focus:py-2 focus:font-mono focus:text-sm focus:text-ink-950"

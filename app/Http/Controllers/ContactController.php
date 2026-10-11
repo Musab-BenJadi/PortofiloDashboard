@@ -11,7 +11,10 @@ class ContactController extends Controller
      */
     public function index()
     {
-        return response()->json(['message' => 'Contact form API is working.'], 200);
+        $contacts = Contact::Select('id', 'name', 'email', 'subject', 'project_type', 'message')->get();
+        return inertia('Contact', [
+            'Entirform' => $contacts,
+        ]);
     }
 
     /**

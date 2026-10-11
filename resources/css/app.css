@@ -173,9 +173,20 @@
 
 @layer base {
   html {
+<<<<<<< HEAD
     -webkit-font-smoothing: antialiased;
   }
 
+=======
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  section[id] {
+    scroll-margin-top: 96px;
+  }
+
+>>>>>>> eb0788ef6825bef663cd8ff2a7cb40fe967ad862
   body {
     font-family: 'Manrope', system-ui, sans-serif;
     background-color: #080b12;
@@ -185,6 +196,66 @@
     background-repeat: no-repeat;
   }
 
+<<<<<<< HEAD
+=======
+  html.light-mode {
+    color-scheme: light;
+  }
+
+  html.light-mode body {
+    background-color: #f8fafc;
+    background-image:
+      radial-gradient(1200px 600px at 15% -10%, rgba(251, 191, 36, 0.12), transparent 60%),
+      radial-gradient(900px 500px at 100% 10%, rgba(59, 130, 246, 0.08), transparent 55%);
+  }
+
+  html.light-mode .bg-slate-950,
+  html.light-mode .bg-slate-900,
+  html.light-mode .bg-slate-800,
+  html.light-mode .bg-ink-950,
+  html.light-mode .bg-ink-900,
+  html.light-mode .bg-ink-800,
+  html.light-mode .soft-card,
+  html.light-mode .glass-panel {
+    background-color: rgba(255, 255, 255, 0.82) !important;
+  }
+
+  html.light-mode .text-paper-100,
+  html.light-mode .text-paper-200,
+  html.light-mode .text-paper-300,
+  html.light-mode .text-paper-400,
+  html.light-mode .text-slate-200,
+  html.light-mode .text-slate-300,
+  html.light-mode .text-slate-400,
+  html.light-mode .text-slate-500,
+  html.light-mode .text-slate-100 {
+    color: #0f172a !important;
+  }
+
+  html.light-mode .text-slate-50,
+  html.light-mode .text-paper-100,
+  html.light-mode .text-paper-200,
+  html.light-mode .text-paper-300,
+  html.light-mode .text-paper-400 {
+    color: #0f172a !important;
+  }
+
+  html.light-mode .border-white\/10,
+  html.light-mode .border-white\/5,
+  html.light-mode .border-line-600,
+  html.light-mode .border-line-700,
+  html.light-mode .border-line-500 {
+    border-color: rgba(15, 23, 42, 0.12) !important;
+  }
+
+  html.light-mode .bg-white\/5,
+  html.light-mode .bg-white\/3,
+  html.light-mode .bg-white\/10,
+  html.light-mode .bg-white\/20 {
+    background-color: rgba(255, 255, 255, 0.7) !important;
+  }
+
+>>>>>>> eb0788ef6825bef663cd8ff2a7cb40fe967ad862
   html[lang='ar'] body {
     font-family: 'Cairo', 'Manrope', system-ui, sans-serif;
   }
@@ -213,7 +284,11 @@
 
 @layer components {
   .section-shell {
+<<<<<<< HEAD
     @apply mx-auto w-full px-6 sm:px-8 lg:px-10;
+=======
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10;
+>>>>>>> eb0788ef6825bef663cd8ff2a7cb40fe967ad862
   }
 
   .section-pad {
@@ -223,6 +298,24 @@
   .kicker {
     @apply font-mono text-[13px] tracking-tight uppercase text-muted-foreground;
   }
+<<<<<<< HEAD
+=======
+
+  .glass-panel {
+    @apply border border-white/10 bg-white/5 backdrop-blur-xl shadow-[0_30px_80px_rgba(2,6,23,0.55)];
+  }
+
+  .soft-card {
+    @apply rounded-3xl border border-white/10 bg-slate-950/70 shadow-[0_20px_60px_rgba(2,6,23,0.45)];
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, #f5f7ff 0%, #d7dffb 24%, #f4c98b 58%, #f59e0b 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+>>>>>>> eb0788ef6825bef663cd8ff2a7cb40fe967ad862
 }
 
 /* Respect reduced-motion preference across the whole app */
@@ -248,3 +341,112 @@
   opacity: 1;
   transform: translateY(0);
 }
+<<<<<<< HEAD
+=======
+
+/* ========================================
+   Portfolio Design System
+   ======================================== */
+
+@layer base {
+    html {
+        -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+        font-family: 'Manrope', system-ui, sans-serif;
+    }
+
+    html[lang='ar'] body,
+    html[lang='ar'] .font-display {
+        font-family: 'Cairo', 'Manrope', system-ui, sans-serif;
+    }
+
+    ::selection {
+        background-color: rgba(227, 168, 87, 0.25);
+        color: #eef0f6;
+    }
+
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible,
+    select:focus-visible,
+    [tabindex]:focus-visible {
+        outline: 2px solid #e3a857;
+        outline-offset: 3px;
+        border-radius: 2px;
+    }
+}
+
+/* Portfolio background */
+
+.welcome-page {
+    color: #eef0f6;
+    background-color: #080b12;
+    background-image:
+        radial-gradient(
+            1200px 600px at 15% -10%,
+            rgba(227, 168, 87, 0.06),
+            transparent 60%
+        ),
+        radial-gradient(
+            900px 500px at 100% 10%,
+            rgba(91, 118, 214, 0.05),
+            transparent 55%
+        );
+    background-repeat: no-repeat;
+    font-family: 'Manrope', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+.welcome-page[lang='ar'],
+.welcome-page[lang='ar'] .font-display {
+    font-family: 'Cairo', 'Manrope', system-ui, sans-serif;
+}
+
+/* Reusable section layouts */
+
+@layer components {
+    .section-shell {
+        @apply mx-auto w-full px-6 sm:px-8 lg:px-10;
+    }
+
+    .section-pad {
+        @apply py-20 sm:py-28;
+    }
+
+    .kicker {
+        @apply font-mono text-[13px] tracking-tight uppercase;
+        color: #e3a857;
+    }
+}
+
+/* Scroll reveal */
+
+.welcome-page [data-reveal] {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+        opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.welcome-page [data-reveal].is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+>>>>>>> eb0788ef6825bef663cd8ff2a7cb40fe967ad862

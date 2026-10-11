@@ -21,7 +21,11 @@ import {
   useTable,
 } from '@tanstack/vue-table'
 import { createReusableTemplate } from '@vueuse/core'
+<<<<<<< HEAD
 import { h, ref } from 'vue'
+=======
+import { h, ref, defineProps, computed } from 'vue'
+>>>>>>> eb0788ef6825bef663cd8ff2a7cb40fe967ad862
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -43,6 +47,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
+<<<<<<< HEAD
 export interface Payment {
   id: string
   amount: number
@@ -82,6 +87,26 @@ const data: Payment[] = [
     email: 'carmella@hotmail.com',
   },
 ]
+=======
+export interface ContactForm {
+    id: number;
+    name: string;
+    email: string;
+    subject: string;
+    project_type: string;
+    message: string;
+}
+
+const props = defineProps<{
+    data: ContactForm[];
+    columns: {
+        header: string;
+        accessorKey: string;
+    }[];
+}>();
+
+const data = computed(() => props.data);
+>>>>>>> eb0788ef6825bef663cd8ff2a7cb40fe967ad862
 
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate<{
   payment: {
@@ -107,6 +132,7 @@ const features = tableFeatures({
   sortFns: { alphanumeric: sortFn_alphanumeric, text: sortFn_text },
 })
 
+<<<<<<< HEAD
 const columnHelper = createColumnHelper<typeof features, Payment>()
 
 const columns = columnHelper.columns([
@@ -165,11 +191,29 @@ const columns = columnHelper.columns([
     },
   }),
 ])
+=======
+const columnHelper = createColumnHelper<typeof features, ContactForm>()
+
+const columns = computed(() =>
+    columnHelper.columns(
+        props.columns.map((column) =>
+            columnHelper.accessor(
+                column.accessorKey as keyof ContactForm,
+                {
+                    header: column.header,
+                    cell: ({ getValue }) => getValue(),
+                },
+            ),
+        ),
+    ),
+);
+>>>>>>> eb0788ef6825bef663cd8ff2a7cb40fe967ad862
 
 // Keep row selection outside the table so the rest of the app can read or update it.
 const rowSelection = ref<RowSelectionState>({})
 
 const table = useTable({
+<<<<<<< HEAD
   features,
   data,
   columns,
@@ -180,6 +224,23 @@ const table = useTable({
     rowSelection.value = typeof updater === 'function' ? updater(rowSelection.value) : updater
   },
 })
+=======
+    features,
+    data: computed(() => props.data),
+    columns,
+    state: {
+        get rowSelection() {
+            return rowSelection.value;
+        },
+    },
+    onRowSelectionChange: (updater) => {
+        rowSelection.value =
+            typeof updater === 'function'
+                ? updater(rowSelection.value)
+                : updater;
+    },
+});
+>>>>>>> eb0788ef6825bef663cd8ff2a7cb40fe967ad862
 
 function copy(id: string) {
   navigator.clipboard.writeText(id)
