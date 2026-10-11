@@ -41,6 +41,7 @@ export default defineConfig({
                 '**/vendor/**',
             ],
         },
+        cors: true, // Enable CORS
     },
     lint: {
         ignorePatterns: [

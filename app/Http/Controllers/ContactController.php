@@ -48,7 +48,8 @@ class ContactController extends Controller
             'message' => $request->input('message'),
         ]);
 
-        return response()->json(['message' => 'Contact form submitted successfully.'], 201);
+        // return response()->json(['message' => 'Contact form submitted successfully.'], 201);
+         return;
     }
 
     /**

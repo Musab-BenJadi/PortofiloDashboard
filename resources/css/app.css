@@ -7,6 +7,19 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+    font-family: 'Cairo-Regular';
+    src: url('/resources/fonts/Cairo-Black.ttf') format('truetype');
+    src: url('/resources/fonts/Cairo-Light.ttf') format('truetype');
+    src: url('/resources/fonts/Cairo-Regular.ttf') format('truetype');
+    /* Additional font properties if needed */
+  }
+
+
+* {
+    font-family: 'Cairo-Regular', sans-serif;
+}
+
 @theme inline {
     --font-sans:
         Instrument Sans, ui-sans-serif, system-ui, sans-serif,
@@ -173,11 +186,6 @@
 
 @layer base {
   html {
-<<<<<<< HEAD
-    -webkit-font-smoothing: antialiased;
-  }
-
-=======
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
   }
@@ -186,7 +194,6 @@
     scroll-margin-top: 96px;
   }
 
->>>>>>> eb0788ef6825bef663cd8ff2a7cb40fe967ad862
   body {
     font-family: 'Manrope', system-ui, sans-serif;
     background-color: #080b12;
@@ -196,8 +203,6 @@
     background-repeat: no-repeat;
   }
 
-<<<<<<< HEAD
-=======
   html.light-mode {
     color-scheme: light;
   }
@@ -255,7 +260,6 @@
     background-color: rgba(255, 255, 255, 0.7) !important;
   }
 
->>>>>>> eb0788ef6825bef663cd8ff2a7cb40fe967ad862
   html[lang='ar'] body {
     font-family: 'Cairo', 'Manrope', system-ui, sans-serif;
   }
@@ -284,11 +288,7 @@
 
 @layer components {
   .section-shell {
-<<<<<<< HEAD
-    @apply mx-auto w-full px-6 sm:px-8 lg:px-10;
-=======
     @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10;
->>>>>>> eb0788ef6825bef663cd8ff2a7cb40fe967ad862
   }
 
   .section-pad {
@@ -298,8 +298,6 @@
   .kicker {
     @apply font-mono text-[13px] tracking-tight uppercase text-muted-foreground;
   }
-<<<<<<< HEAD
-=======
 
   .glass-panel {
     @apply border border-white/10 bg-white/5 backdrop-blur-xl shadow-[0_30px_80px_rgba(2,6,23,0.55)];
@@ -315,7 +313,6 @@
     background-clip: text;
     color: transparent;
   }
->>>>>>> eb0788ef6825bef663cd8ff2a7cb40fe967ad862
 }
 
 /* Respect reduced-motion preference across the whole app */
@@ -341,8 +338,6 @@
   opacity: 1;
   transform: translateY(0);
 }
-<<<<<<< HEAD
-=======
 
 /* ========================================
    Portfolio Design System
@@ -449,4 +444,3 @@
         scroll-behavior: auto !important;
     }
 }
->>>>>>> eb0788ef6825bef663cd8ff2a7cb40fe967ad862
