@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ColumnDef, RowSelectionState } from '@tanstack/vue-table'
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from '@lucide/vue'
+import { ArrowUpDown, ChevronDown, MoreHorizontal, Eye, Pencil, Trash2, Star, Check, ClockFading } from '@lucide/vue'
 import {
   columnFilteringFeature,
   columnVisibilityFeature,
@@ -20,7 +20,7 @@ import {
   useTable,
 } from '@tanstack/vue-table'
 import { createReusableTemplate } from '@vueuse/core'
-import { ref, computed } from 'vue'
+import { ref, computed, h } from 'vue'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -42,31 +42,24 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-export interface ContactForm {
-    id: number;
-    name: string;
-    email: string;
-    subject: string;
-    project_type: string;
-    message: string;
+export interface TableColumn {
+    header: string;
+    accessorKey: string;
 }
 
+
+
 const props = defineProps<{
-    data: ContactForm[];
-    columns: {
-        header: string;
-        accessorKey: string;
-    }[];
+    data: Record<string, any>[];
+    columns: TableColumn[];
+    actions?: {
+        view?: (row: Record<string, any>) => void
+        edit?: (row: Record<string, any>) => void
+        delete?: (row: Record<string, any>) => void
+    }
 }>();
 
 const data = computed(() => props.data);
-
-const [DefineTemplate, ReuseTemplate] = createReusableTemplate<{
-  payment: {
-    id: string
-  }
-  onExpand: () => void
-}>()
 
 // New in v9: declare the features this table uses — anything you don't
 // register is tree-shaken out of the bundle.
@@ -85,13 +78,69 @@ const features = tableFeatures({
   sortFns: { alphanumeric: sortFn_alphanumeric, text: sortFn_text },
 }) as any
 
-const columns = ref<any[]>(
-  props.columns.map((column) => ({
-    accessorKey: column.accessorKey as keyof ContactForm,
-    header: column.header,
-    cell: ({ getValue }: { getValue: (key: keyof ContactForm) => ContactForm[keyof ContactForm] }) => getValue(column.accessorKey as keyof ContactForm),
-  })),
-)
+const columns = ref(
+    props.columns.map((column) => ({
+        accessorKey: column.accessorKey,
+        header: column.header,
+        cell: ({ getValue }: { getValue: () => unknown }) => {
+            const value = getValue();
+
+            if (typeof value === 'boolean' && column.accessorKey === 'is_featured') {
+                  return h(Star, {
+                      size: 24,
+                      class: value
+                          ? 'text-yellow-400'
+                          : 'text-gray-500',
+                  });
+            }
+
+            if (typeof value === 'boolean' && column.accessorKey === 'is_published') {
+                  return value ? h(Check, {
+                      size: 24,
+                      class:'text-green-400'
+                  }) : h(ClockFading, {
+                      size: 24,
+                      class:'text-gray-400 animate-pulse',
+                  });
+            }
+
+            if (value === null || value === undefined || value === '') {
+                return '-';
+            }
+
+            if (typeof value === 'object') {
+                return JSON.stringify(value);
+            }
+
+            return String(value);
+        },
+    }))
+  );
+
+  if (props.actions) {
+    columns.value.push({
+        id: 'actions',
+        header: 'Actions',
+        cell: ({ row }: any) =>
+            h('div', { class: 'flex gap-2' }, [
+                props.actions?.view &&
+                    h(Eye, {
+                        class: 'h-4 w-4 cursor-pointer text-blue-500',
+                        onClick: () => props.actions?.view?.(row.original),
+                    }),
+                props.actions?.edit &&
+                    h(Pencil, {
+                        class: 'h-4 w-4 cursor-pointer text-amber-500',
+                        onClick: () => props.actions?.edit?.(row.original),
+                    }),
+                props.actions?.delete &&
+                    h(Trash2, {
+                        class: 'h-4 w-4 cursor-pointer text-red-500',
+                        onClick: () => props.actions?.delete?.(row.original),
+                    }),
+            ]),
+    } as any)
+}
 
 // Keep row selection outside the table so the rest of the app can read or update it.
 const rowSelection = ref<RowSelectionState>({})
@@ -130,33 +179,8 @@ function toggleColumnVisibility(
 </script>
 
 <template>
-  <DefineTemplate v-slot="{ payment }">
-    <DropdownMenu>
-      <DropdownMenuTrigger as-child>
-        <Button variant="ghost" class="h-8 w-8 p-0">
-          <span class="sr-only">Open menu</span>
-          <MoreHorizontal class="h-4 w-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuItem @click="copy(payment.id)">
-          Copy payment ID
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>View customer</DropdownMenuItem>
-        <DropdownMenuItem>View payment details</DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  </DefineTemplate>
   <div class="w-full">
     <div class="flex items-center py-4">
-      <Input
-        class="max-w-sm"
-        placeholder="Filter emails..."
-        :model-value="table.getColumn('email')?.getFilterValue() as string"
-        @update:model-value=" table.getColumn('email')?.setFilterValue($event)"
-      />
       <DropdownMenu>
         <DropdownMenuTrigger as-child>
           <Button variant="outline" class="ml-auto">
@@ -176,7 +200,7 @@ function toggleColumnVisibility(
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
-    <div class="rounded-md border">
+    <div class="rounded-md border an">
       <Table>
         <TableHeader>
           <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
