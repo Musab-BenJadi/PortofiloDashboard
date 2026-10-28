@@ -15,8 +15,8 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
-import { contactUs } from '@/routes';
+import { dashboard, contactUs } from '@/routes';
+import { index as projects } from '@/routes/projects';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
@@ -29,6 +29,11 @@ const mainNavItems: NavItem[] = [
         title: 'Contact Us',
         href: contactUs(),
         icon: BookOpen,
+    },
+    {
+        title: 'Projects',
+        href: projects(),
+        icon: FolderGit2,
     },
 ];
 

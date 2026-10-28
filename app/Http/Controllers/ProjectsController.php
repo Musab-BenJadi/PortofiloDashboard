@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\Contact;
+use App\Models\Project;
 class ProjectsController extends Controller
 {
     /**
@@ -11,7 +13,21 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        dd('Welcom in Projetcs index');
+        
+        $projects = Project::query()
+            ->select([
+                'id',
+                'title',
+                'subtitle',
+                'status',
+                'is_featured',
+                'is_published',
+            ])
+            ->get();
+        // dd($projects);
+        return inertia('projects/index', [
+            'Projects' => $projects,
+        ]);
     }
 
     /**
@@ -35,7 +51,11 @@ class ProjectsController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $project = Project::find($id)->first();
+        // dd($project);
+        return inertia('projects/show', [
+            'project' => $project,
+        ]);
     }
 
     /**
