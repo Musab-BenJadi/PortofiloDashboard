@@ -35,7 +35,7 @@ class ProjectsController extends Controller
      */
     public function create()
     {
-        //
+        return inertia('projects/create');
     }
 
     /**
@@ -51,8 +51,8 @@ class ProjectsController extends Controller
      */
     public function show(string $id)
     {
-        $project = Project::find($id)->first();
-        // dd($project);
+        $project = Project::with('skill')->find($id)->first();
+        dd($project);
         return inertia('projects/show', [
             'project' => $project,
         ]);

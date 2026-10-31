@@ -48,8 +48,8 @@ class Project extends Model
         ];
     }
 
-    // public function skills(): BelongsToMany
-    // {
-    //     return $this->belongsToMany(Skill::class);
-    // }
+    public function skills(): BelongsToMany
+    {
+        return $this->belongsToMany(Skill::class);
+    }
 }

@@ -213,6 +213,8 @@ defineOptions({
                     </div>
                 </dl>
 
+                {{ project }}
+
                 <div class="mt-6 flex flex-col gap-3 border-t pt-5">
                     <Button
                         v-if="project.live_url"
