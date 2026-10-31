@@ -1,5 +1,6 @@
 
 <script setup lang="ts">
+import { ref, computed } from 'vue';
 import { Head, useForm, Link } from '@inertiajs/vue3'
 import { ArrowLeft, Save, ImagePlus } from '@lucide/vue'
 
@@ -9,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 
-defineProps<{
+const props = defineProps<{
     skills: {
         id: number
         name: Record<string, string>
@@ -52,6 +53,16 @@ function toggleSkill(id: number, checked: boolean) {
         form.skills = form.skills.filter(skill => skill !== id)
     }
 }
+
+const skillSearch = ref('');
+
+const filteredSkills = computed(() =>
+    props.skills.filter(skill =>
+        skill.name.en
+            .toLowerCase()
+            .includes(skillSearch.value.toLowerCase())
+    )
+);
 
 defineOptions({
     layout: {
@@ -242,29 +253,64 @@ defineOptions({
                 </section>
 
                 <!-- Skills -->
-                <section class="space-y-4 rounded-xl border bg-card p-6">
-                    <h2 class="font-semibold">Technologies & Skills</h2>
+                <!-- Skills -->
+<section class="space-y-4 rounded-xl border bg-card p-6">
+    <h2 class="font-semibold">Technologies & Skills</h2>
 
-                    <div
-                        v-for="skill in skills"
-                        :key="skill.id"
-                        class="flex items-center gap-2"
-                    >
-                        <input
-                            type="checkbox"
-                            :id="`skill-${skill.id}`"
-                            :checked="form.skills.includes(skill.id)"
-                            @change="toggleSkill(
-                                skill.id,
-                                ($event.target as HTMLInputElement).checked
-                            )"
-                        />
+    <!-- Search -->
+    <input
+        v-model="skillSearch"
+        type="text"
+        placeholder="Search skills..."
+        class="w-full rounded-md border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary"
+    />
 
-                        <Label :for="`skill-${skill.id}`">
-                            {{ skill.name.en }}
-                        </Label>
-                    </div>
-                </section>
+    <!-- Selected Skills -->
+    <div v-if="form.skills.length" class="flex flex-wrap gap-2">
+        <span
+            v-for="skillId in form.skills"
+            :key="skillId"
+            class="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary"
+        >
+            {{ skills.find(skill => skill.id === skillId)?.name.en }}
+
+            <button
+                type="button"
+                @click="toggleSkill(skillId, false)"
+                class="hover:text-destructive"
+            >
+                &times;
+            </button>
+        </span>
+    </div>
+
+    <!-- Search Results -->
+    <div class="max-h-48 space-y-2 overflow-y-auto rounded-md border p-3">
+        <label
+            v-for="skill in filteredSkills"
+            :key="skill.id"
+            class="flex cursor-pointer items-center gap-2 rounded-md p-2 hover:bg-muted"
+        >
+            <input
+                type="checkbox"
+                :checked="form.skills.includes(skill.id)"
+                @change="toggleSkill(
+                    skill.id,
+                    ($event.target as HTMLInputElement).checked
+                )"
+            />
+
+            <span class="text-sm">{{ skill.name.en }}</span>
+        </label>
+
+        <p
+            v-if="filteredSkills.length === 0"
+            class="py-2 text-center text-sm text-muted-foreground"
+        >
+            No skills found.
+        </p>
+    </div>
+</section>
 
                 <p v-if="form.hasErrors" class="text-sm text-red-500">
                     Please check the form for validation errors.

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Contact;
 use App\Models\Project;
+use App\Models\Skill;
 class ProjectsController extends Controller
 {
     /**
@@ -35,7 +36,10 @@ class ProjectsController extends Controller
      */
     public function create()
     {
-        return inertia('projects/create');
+        $skills = Skill::Select('id', 'name')->get();
+        return inertia('projects/create', [
+            'skills' => $skills
+        ]);
     }
 
     /**
@@ -51,8 +55,10 @@ class ProjectsController extends Controller
      */
     public function show(string $id)
     {
-        $project = Project::with('skill')->find($id)->first();
-        dd($project);
+        $project = Project::with('skills')
+            ->where('id', $id)
+            ->first();
+        // dd($project);
         return inertia('projects/show', [
             'project' => $project,
         ]);
