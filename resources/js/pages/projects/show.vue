@@ -1,8 +1,9 @@
 
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3'
-import { ArrowLeft, ExternalLink, Pencil, Check, X } from '@lucide/vue'
+import { ArrowLeft, ExternalLink, Pencil, Check, X, BookCheck } from '@lucide/vue'
 import { Button } from '@/components/ui/button'
+import { Star } from 'lucide-vue-next';
 // import { index as projects } from '@/routes/projects';
 
 interface Project {
@@ -12,6 +13,10 @@ interface Project {
     subtitle: Record<string, string> | null
     description: Record<string, string>
     content: Record<string, string> | null
+    skills?: Array<{
+        id: number
+        name: Record<string, string>
+    }>
     thumbnail: string | null
     live_url: string | null
     github_url: string | null
@@ -74,7 +79,7 @@ defineOptions({
         <div class="overflow-hidden rounded-xl border bg-card">
             <div
                 v-if="project.thumbnail"
-                class="aspect-video max-h-[420px] bg-muted"
+                class="aspect-video max-h-105 bg-muted"
             >
                 <img
                     :src="project.thumbnail"
@@ -114,17 +119,19 @@ defineOptions({
 
                     <span
                         v-if="project.is_featured"
-                        class="rounded-full bg-amber-500/10 px-3 py-1 text-sm text-amber-600"
+                        class="flex gap-1 justify-between items-center rounded-full bg-amber-500/10 px-3 py-1 text-sm text-amber-600"
                     >
+                        <Star :size="16" />
                         Featured
                     </span>
 
                     <span
-                        class="rounded-full px-3 py-1 text-sm"
+                        class="flex gap-1 justify-between items-center rounded-full px-3 py-1 text-sm"
                         :class="project.is_published
                             ? 'bg-green-500/10 text-green-600'
                             : 'bg-muted text-muted-foreground'"
                     >
+                        <BookCheck :size="16" />
                         {{ project.is_published ? 'Published' : 'Draft' }}
                     </span>
                 </div>
@@ -150,6 +157,24 @@ defineOptions({
 
                     <div class="whitespace-pre-wrap leading-7 text-muted-foreground">
                         {{ project.content.en }}
+                    </div>
+                </section>
+
+                <!-- Techincal Skills -->
+                <section
+                    v-if="project.skills?.length"
+                    class="rounded-xl border bg-card p-6"
+                >
+                    <h3 class="mb-4 text-lg font-semibold">Project Skills</h3>
+
+                    <div class="flex flex-wrap gap-2">
+                        <span
+                            v-for="skill in project.skills"
+                            :key="skill.id"
+                            class="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/40 dark:text-blue-300"
+                        >
+                            {{ skill.name.en }}
+                        </span>
                     </div>
                 </section>
             </div>

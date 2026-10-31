@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { Head, router } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import DataTable from '@/components/DataTable.vue';
-import { index as projects } from '@/routes/projects';
+import { index, create } from '@/routes/projects';
+import Button from '@/components/ui/button/Button.vue';
+import { PlusSquare } from 'lucide-vue-next';
 
 interface ProjectsEntire {
     id: number;
@@ -19,7 +21,7 @@ defineOptions({
         breadcrumbs: [
             {
                 title: 'Projects',
-                href: projects(),
+                href: index(),
             },
         ],
     },
@@ -47,9 +49,27 @@ const actions = {
     <div
         class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4"
     >
+    <div class="flex flex-wrap items-center justify-between gap-4">
+            <div>
+                <h1 class="text-2xl font-semibold tracking-tight">
+                    Project Table
+                </h1>
+                <p class="mt-1 text-sm text-muted-foreground">
+                    projects short information.
+                </p>
+            </div>
 
+            <div class="flex gap-2">
+                <Button as-child class="cursor-pointer">
+                    <Link :href="create().url">
+                        <PlusSquare class="mr-2 h-4 w-4" />
+                        New Project
+                    </Link>
+                </Button>
+            </div>
+        </div>
         <div
-            class="relative min-h-[100vh] px-4 py-8 flex-1 rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border"
+            class="relative min-h-screen px-4 py-8 flex-1 rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border"
         >
             <!-- <PlaceholderPattern /> -->
             <data-table
