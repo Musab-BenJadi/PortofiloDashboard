@@ -79,7 +79,7 @@ defineOptions({
         <div class="overflow-hidden rounded-xl border bg-card">
             <div
                 v-if="project.thumbnail"
-                class="aspect-video max-h-[420px] bg-muted"
+                class="aspect-video max-h-105 bg-muted"
             >
                 <img
                     :src="project.thumbnail"
